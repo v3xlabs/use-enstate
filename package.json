@@ -13,7 +13,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsup ./src/index.ts",
-        "lint": "eslint -c .eslintrc.json --ext .ts ./src"
+        "lint": "eslint -c .eslintrc.json --ext .ts ./src",
+        "pub": "yarn build && yarn publish --access public"
     },
     "keywords": [],
     "author": "",
