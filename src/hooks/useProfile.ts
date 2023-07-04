@@ -78,7 +78,10 @@ export const useProfile = (properties: ProfileProperties) => {
     return useSWR(
         enabled && key,
         async (argument: string) => {
-            const response = await fetch(argument);
+            const response = await fetch(argument, {
+                mode: 'no-cors',
+                method: 'GET',
+            });
 
             if (!response.ok) {
                 throw new Error('Could not fetch profile');
