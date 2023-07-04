@@ -1,1 +1,2 @@
-export { useProfile } from './hooks/useProfile';
+export * from './hooks';
+export * from './types';
