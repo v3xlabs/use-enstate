@@ -1,9 +1,8 @@
 {
     "name": "use-enstate",
-    "version": "0.0.1-1",
     "description": "",
     "main": "dist/index.js",
-    "module": "dist/index.esm.js",
+    "module": "dist/index.mjs",
     "types": "dist/index.d.ts",
     "files": [
         "dist",
