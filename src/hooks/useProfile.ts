@@ -79,7 +79,6 @@ export const useProfile = (properties: ProfileProperties) => {
         enabled && key,
         async (argument: string) => {
             const response = await fetch(argument, {
-                mode: 'no-cors',
                 method: 'GET',
             });
 
