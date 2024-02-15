@@ -1,34 +1,26 @@
-import useSWR from 'swr';
+import useSWR, { SWRConfig } from 'swr';
 
-import { getNameAndAddress, getProfileKey } from '../helpers';
+import { profileFetcher } from '../helpers';
 import { PUBLIC_ENDPOINT } from '../public';
-import { Profile } from '../types';
-import { ProfileHookProperties } from '../types/ProfileProperties';
+import { BaseSwrHookProperties } from '../types/HookProperties';
+import { ProfileProperties } from '../types/ProfileProperties';
 
-export const useProfile = (properties: ProfileHookProperties) => {
-    const { type, value } = getNameAndAddress(properties);
+export type ProfileHookProperties = ProfileProperties & {
+    enabled?: boolean;
+    swr?: typeof SWRConfig;
+};
 
-    const enabled = properties.enabled ?? type !== 'unknown';
-
-    const key = getProfileKey(
-        type,
-        value,
-        properties.endpoint || PUBLIC_ENDPOINT
-    );
-
+export const useProfile = (
+    query: string,
+    properties: BaseSwrHookProperties
+) => {
     return useSWR(
-        enabled && key,
-        async (argument: string) => {
-            const response = await fetch(argument, {
-                method: 'GET',
-            });
-
-            if (!response.ok) {
-                throw new Error('Could not fetch profile');
-            }
-
-            return (await response.json()) as Profile;
-        },
+        properties.enabled && [
+            properties.endpoint ?? PUBLIC_ENDPOINT,
+            '/u',
+            query,
+        ],
+        ([endpoint, path, query]) => profileFetcher(endpoint, query),
         properties.swr
     );
 };

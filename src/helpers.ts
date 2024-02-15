@@ -1,44 +1,39 @@
-import { NameOrAddress } from './types/NameOrAddress';
+import { BulkResponse, ListResponse, ProfileResponse } from './types';
 
 const AddressRegex = /^0x[\dA-Fa-f]{40}$/;
 
 // More accepting then it should be but good safeguard
 const NameRegex = /^(?:[L-NPSZps{}]+\.){2,}[L-NPSZps{}]{2,}$/;
 
-export const getProfileKey = (
-    type: 'name' | 'address' | 'unknown',
-    value: string,
-    endpoint: string
-) => {
-    if (type === 'name') {
-        return endpoint + '/n/' + value;
+export const profileFetcher = async (baseUrl: string, query: string) => {
+    const url = baseUrl + '/u/' + query;
+
+    const response = await fetch(url, {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+        throw new Error('Could not fetch profile');
     }
 
-    if (type === 'address') {
-        return endpoint + '/a/' + value;
-    }
+    return (await response.json()) as ProfileResponse;
 };
 
-export const getNameAndAddress = (
-    properties: NameOrAddress
-): { type: 'name' | 'address' | 'unknown'; value: string } => {
-    if ('name' in properties) {
-        return { type: 'name', value: properties.name };
+export const bulkProfileFetcher = async (
+    baseUrl: string,
+    queries: string[]
+) => {
+    const url = `${baseUrl}/bulk/u?queries[]=${queries.join('&queries[]=')}`;
+
+    const response = await fetch(url, {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+        throw new Error('Could not fetch profile');
     }
 
-    if ('address' in properties) {
-        return { type: 'address', value: properties.address };
-    }
-
-    if ('nameOrAddress' in properties) {
-        if (properties.nameOrAddress.match(NameRegex) !== null) {
-            return { type: 'name', value: properties.nameOrAddress };
-        }
-
-        if (properties.nameOrAddress.match(AddressRegex) !== null) {
-            return { type: 'address', value: properties.nameOrAddress };
-        }
-    }
-
-    return { type: 'unknown', value: '' };
+    return (await response.json()) as ListResponse<
+        BulkResponse<ProfileResponse>
+    >;
 };
