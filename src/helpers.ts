@@ -1,10 +1,5 @@
 import { BulkResponse, ListResponse, ProfileResponse } from './types';
 
-const AddressRegex = /^0x[\dA-Fa-f]{40}$/;
-
-// More accepting then it should be but good safeguard
-const NameRegex = /^(?:[L-NPSZps{}]+\.){2,}[L-NPSZps{}]{2,}$/;
-
 export const profileFetcher = async (baseUrl: string, query: string) => {
     const url = baseUrl + '/u/' + query;
 

@@ -1,14 +1,8 @@
-import useSWR, { SWRConfig } from 'swr';
+import useSWR from 'swr';
 
 import { profileFetcher } from '../helpers';
 import { PUBLIC_ENDPOINT } from '../public';
 import { BaseSwrHookProperties } from '../types/HookProperties';
-import { ProfileProperties } from '../types/ProfileProperties';
-
-export type ProfileHookProperties = ProfileProperties & {
-    enabled?: boolean;
-    swr?: typeof SWRConfig;
-};
 
 export const useProfile = (
     query: string,

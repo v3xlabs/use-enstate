@@ -23,13 +23,11 @@ export const useStreamingBulkProfile = (
                 undefined
             >
         ) => {
-            console.log('fetching', endpoint, path, queries);
             const eventSource = new EventSource(
                 `${endpoint}${path}?queries[]=${queries.join('&queries[]=')}`
             );
 
             eventSource.addEventListener('message', (event) => {
-                console.log('message', event);
                 const response = JSON.parse(event.data) as SSEResponse<
                     BulkResponse<ProfileResponse>
                 >;
