@@ -2,16 +2,36 @@
     "name": "use-enstate",
     "description": "",
     "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "types": "dist/index.d.ts",
+    "type": "module",
     "files": [
         "dist",
-        "src",
         "tsconfig.json"
     ],
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs",
+            "types": "./dist/index.d.ts"
+        },
+        "./helpers": {
+            "import": "./dist/helpers.js",
+            "require": "./dist/helpers.cjs",
+            "types": "./dist/helpers.d.ts"
+        }
+    },
+    "typesVersions": {
+        "*": {
+            ".": [
+                "./dist/index.d.ts"
+            ],
+            "./helpers": [
+                "./dist/helpers.d.ts"
+            ]
+        }
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsup ./src/index.ts",
+        "build": "tsup",
         "lint": "eslint -c .eslintrc.json --ext .ts ./src",
         "pub": "yarn build && yarn publish --access public"
     },
