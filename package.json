@@ -24,7 +24,7 @@
             ".": [
                 "./dist/index.d.ts"
             ],
-            "./helpers": [
+            "helpers": [
                 "./dist/helpers.d.ts"
             ]
         }
