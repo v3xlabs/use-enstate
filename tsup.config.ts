@@ -6,10 +6,8 @@ export default defineConfig({
     dts: true, // Generate TypeScript declaration files (*.d.ts)
     outDir: 'dist', // Output directory for the generated bundles
     sourcemap: true, // Generate sourcemaps for easier debugging
-    splitting: true,
+    splitting: false,
     clean: true,
     minify: true, // Optionally, enable minification
-    minifyIdentifiers: true,
-    minifyWhitespace: true,
-    minifySyntax: true,
+    external: ['swr'], // Mark `swr` as an external module
 });
