@@ -1,4 +1,8 @@
-import useSWRSubscription, { SWRSubscriptionOptions } from 'swr/subscription';
+import type {
+    SWRSubscriptionOptions,
+    SWRSubscriptionResponse,
+} from 'swr/subscription';
+import useSWRSubscription from 'swr/subscription';
 
 import { PUBLIC_ENDPOINT } from '../public';
 import { BulkResponse, ProfileResponse, SSEResponse } from '../types';
@@ -7,7 +11,7 @@ import { BaseSwrHookProperties } from '../types/HookProperties';
 export const useStreamingBulkProfile = (
     queries: string[],
     properties: BaseSwrHookProperties
-) =>
+): SWRSubscriptionResponse<Record<string, BulkResponse<ProfileResponse>>> =>
     useSWRSubscription(
         properties.enabled && [
             properties.endpoint ?? PUBLIC_ENDPOINT,
