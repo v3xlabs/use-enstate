@@ -12,6 +12,6 @@
         "outDir": "lib",
         "esModuleInterop": true
     },
-    "include": ["src"],
-    "exclude": ["node_modules", "tests", "lib"]
+    "include": ["src", "test"],
+    "exclude": ["node_modules", "lib"]
 }

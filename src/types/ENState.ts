@@ -12,14 +12,14 @@ export type ProfileResponse = {
     /** Preferred Capitalization of Name */
     display: string;
     /** Records */
-    records: Record<RecordKey, string>;
+    records: Partial<Record<RecordKey, string>>;
     /** Addresses on different chains */
     chains: Record<string, string>;
     /** Unix Timestamp of date it was loaded */
     fresh: number;
     /** Resolver the information was fetched from */
     resolver: string;
-    ccip_urls: string[];
+    ccip_urls?: string[];
     /** Errors encountered while fetching & decoding */
     errors: Record<string, string>;
 };
@@ -30,6 +30,7 @@ export type BulkResponse<Ok> =
       } & Ok)
     | {
           type: 'error';
+          status: 404;
           error: string;
       };
 
