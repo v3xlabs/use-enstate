@@ -7,15 +7,15 @@ import { BaseSwrHookProperties } from '../types/HookProperties';
 
 export const useBulkProfile = (
     queries: string[],
-    properties: BaseSwrHookProperties
+    properties?: BaseSwrHookProperties
 ): SWRResponse<Awaited<ReturnType<typeof bulkProfileFetcher>>, any, any> => {
     return useSWR(
-        properties.enabled && [
-            properties.endpoint ?? PUBLIC_ENDPOINT,
+        properties?.enabled !== false && [
+            properties?.endpoint ?? PUBLIC_ENDPOINT,
             '/bulk/u',
             queries,
         ],
-        ([endpoint, path, queries]) => bulkProfileFetcher(endpoint, queries),
-        properties.swr
+        ([endpoint, _, queries]) => bulkProfileFetcher(endpoint, queries),
+        properties?.swr
     );
 };

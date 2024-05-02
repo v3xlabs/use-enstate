@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type {
     SWRSubscriptionOptions,
     SWRSubscriptionResponse,
@@ -8,13 +9,23 @@ import { PUBLIC_ENDPOINT } from '../public';
 import { BulkResponse, ProfileResponse, SSEResponse } from '../types';
 import { BaseSwrHookProperties } from '../types/HookProperties';
 
+export const IS_LOADING_SYMBOL = Symbol('status');
+
+type StreamingBulkProfileHookResponse = SWRSubscriptionResponse<
+    Record<string, BulkResponse<ProfileResponse>>
+> & {
+    isLoading: boolean;
+};
+
 export const useStreamingBulkProfile = (
     queries: string[],
-    properties: BaseSwrHookProperties
-): SWRSubscriptionResponse<Record<string, BulkResponse<ProfileResponse>>> =>
-    useSWRSubscription(
-        properties.enabled && [
-            properties.endpoint ?? PUBLIC_ENDPOINT,
+    properties?: BaseSwrHookProperties
+): StreamingBulkProfileHookResponse => {
+    const [isLoading, setIsLoading] = useState(true);
+
+    const subscription = useSWRSubscription(
+        properties?.enabled !== false && [
+            properties?.endpoint ?? PUBLIC_ENDPOINT,
             '/sse/u',
             queries,
         ],
@@ -48,11 +59,18 @@ export const useStreamingBulkProfile = (
                 // Server Sent Events has no proper close event, so we have to rely on the error event
                 // to clean up the event source.
                 eventSource.close();
+                setIsLoading(false);
             });
 
             return () => {
                 eventSource.close();
             };
         },
-        properties.swr
+        properties?.swr
     );
+
+    return {
+        ...subscription,
+        isLoading,
+    };
+};
